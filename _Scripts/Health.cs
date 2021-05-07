@@ -1,0 +1,54 @@
+﻿using PathCreation.Examples;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Health : MonoBehaviour
+{
+    public TMP_Text healthText;
+    public Image healthBar, ringHealthBar;
+    public Image[] healthPoints;
+
+    float lerpSpeed;
+    public GameManager gm;
+    private void Start()
+    {
+       // health = maxHealth;
+    }
+
+    private void Update()
+    {
+        healthText.text = "Health: " + gm.health + "%";
+        if (gm.health > gm.maxHealth) gm.health = gm.maxHealth;
+
+        lerpSpeed = 3f * Time.deltaTime;
+
+        HealthBarFiller();
+        ColorChanger();
+    }
+
+    void HealthBarFiller()
+    {
+       // healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, (gm.health / gm.maxHealth), lerpSpeed);
+       // ringHealthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, (gm.health / gm.maxHealth), lerpSpeed);
+
+        for (int i = 0; i < healthPoints.Length; i++)
+        {
+           
+            healthPoints[i].enabled = !DisplayHealthPoint(gm.health, i);
+        }
+    }
+    void ColorChanger()
+    {
+        Color healthColor = Color.Lerp(Color.red, Color.green, (gm.health / gm.maxHealth));
+        healthBar.color = healthColor;
+        ringHealthBar.color = healthColor;
+    }
+
+    bool DisplayHealthPoint(float _health, int pointNumber)
+    {
+        return ((pointNumber * 10) >= _health);
+    }
+
+
+}
